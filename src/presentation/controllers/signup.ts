@@ -1,15 +1,22 @@
 import { MissingParamError } from '../errors/missing-param-error'
 import { badRequest } from '../helpers/http-helper'
 import { HttpRequest, HttpResponse } from '../protocols/http'
+import { z } from 'zod'
+
+const bodySchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+})
 
 export class SignUpController {
   handle(httpRequest: HttpRequest): HttpResponse {
-    if (!httpRequest.body.name) {
-      return badRequest(new MissingParamError('name'))
-    }
+    const result = bodySchema.safeParse(httpRequest.body)
 
-    if (!httpRequest.body.email) {
-      return badRequest(new MissingParamError('email'))
+    if (result.success === false) {
+      const { error } = result
+      return badRequest(
+        new MissingParamError(error.issues[0].path[0] as string),
+      )
     }
   }
 }
