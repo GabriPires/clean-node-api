@@ -7,6 +7,7 @@ const bodySchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string(),
+  passwordConfirmation: z.string(),
 })
 
 export class SignUpController {
