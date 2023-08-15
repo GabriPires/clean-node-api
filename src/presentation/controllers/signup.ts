@@ -1,7 +1,8 @@
-import { MissingParamError } from '../errors/missing-param-error'
-import { badRequest } from '../helpers/http-helper'
-import { HttpRequest, HttpResponse } from '../protocols/http'
 import { z } from 'zod'
+import { MissingParamError } from '../errors/missing-param-error'
+import { HttpRequest, HttpResponse } from '../protocols/http'
+import { badRequest } from '../helpers/http-helper'
+import { Controller } from '../protocols/controller'
 
 const bodySchema = z.object({
   name: z.string(),
@@ -10,7 +11,7 @@ const bodySchema = z.object({
   passwordConfirmation: z.string(),
 })
 
-export class SignUpController {
+export class SignUpController implements Controller {
   handle(httpRequest: HttpRequest): HttpResponse {
     const result = bodySchema.safeParse(httpRequest.body)
 
