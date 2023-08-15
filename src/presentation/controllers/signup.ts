@@ -6,6 +6,7 @@ import { z } from 'zod'
 const bodySchema = z.object({
   name: z.string(),
   email: z.string().email(),
+  password: z.string(),
 })
 
 export class SignUpController {
